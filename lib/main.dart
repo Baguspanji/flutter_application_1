@@ -22,7 +22,13 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Belajar')),
+      appBar: AppBar(
+        title: Text(
+          'Belajar',
+          style: TextStyle(fontSize: 30),
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Center(
@@ -41,7 +47,17 @@ class Home extends StatelessWidget {
       bottomSheet: Container(
         width: MediaQuery.of(context).size.width,
         height: 60,
+        padding: EdgeInsets.symmetric(horizontal: 6),
         child: ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
+              ),
+            ),
+          ),
           child: Text(
             'Button',
             style: TextStyle(fontSize: 30),
