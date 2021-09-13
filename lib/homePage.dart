@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api/resource.dart';
 import 'package:flutter_application_1/homeAdd.dart';
+import 'package:flutter_application_1/homeDetail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,13 +37,17 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            children: data
-                .map((e) => buildItem(
-                      e['nama'],
-                      e['harga'],
-                    ))
-                .toList(),
+          child: RefreshIndicator(
+            onRefresh: () => getData(),
+            child: ListView(
+              children: data
+                  .map((e) => buildItem(
+                        e['id'],
+                        e['nama'],
+                        e['harga'],
+                      ))
+                  .toList(),
+            ),
           ),
         ),
       ),
@@ -59,7 +64,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildItem(String title, String subtitle) {
+  Widget buildItem(int id, String title, String subtitle) {
     return Card(
       elevation: 8,
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -76,6 +81,11 @@ class _HomePageState extends State<HomePage> {
           'Rp $subtitle',
           style: TextStyle(fontSize: 20),
         ),
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeDetail(id: id),
+            )),
       ),
     );
   }
