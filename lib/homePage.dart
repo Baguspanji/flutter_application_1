@@ -21,11 +21,8 @@ class _HomePageState extends State<HomePage> {
 
   getData() async {
     var res = await Resource().getProduk();
-    print('json = $res');
-    print('jsonDecode = $jsonDecode(res)');
-
-    // var json = jsonDecode(res) as Map<String, dynamic>;
-    // data = json['data'];
+    var json = jsonDecode(res) as Map<String, dynamic>;
+    data = json['data'];
     setState(() {});
   }
 
