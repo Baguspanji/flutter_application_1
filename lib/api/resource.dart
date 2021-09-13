@@ -41,4 +41,32 @@ class Resource {
       );
     }
   }
+
+  void updateProduk(BuildContext context, int id, String nama, String satuan,
+      String harga) async {
+    var body = jsonEncode({'nama': nama, 'satuan': satuan, 'harga': harga});
+    var url = Uri.parse('$uri/produk/$id');
+    var res = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+
+    if (res.statusCode == 201) {
+      print(res.body);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Berhasil update data!')),
+      );
+    }
+  }
+
+  void deleteProdukId(String id) async {
+    var url = Uri.parse('$uri/produk/$id');
+    var res = await http.delete(url);
+
+    if (res.statusCode == 200) {
+      // return true;
+      print('Berhasil hapus');
+    }
+  }
 }
