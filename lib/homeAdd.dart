@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/api/resource.dart';
 
 class HomeAdd extends StatefulWidget {
   const HomeAdd({Key? key}) : super(key: key);
@@ -11,6 +12,20 @@ class _HomeAddState extends State<HomeAdd> {
   final namaController = TextEditingController();
   final satuanController = TextEditingController();
   final hargaController = TextEditingController();
+
+  addData() {
+    String nama = namaController.text;
+    String satuan = satuanController.text;
+    String harga = hargaController.text;
+
+    if (nama == '' || satuan == '' || harga == '') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Form harus diisi!')),
+      );
+    } else {
+      Resource().createProduk(context, nama, satuan, harga);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +92,7 @@ class _HomeAddState extends State<HomeAdd> {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  // NamaController
-                  print('nama : ${namaController.text}');
-                  // NamaController
-                  print('satuan : ${satuanController.text}');
-                  // NamaController
-                  print('harga : ${hargaController.text}');
-                },
+                onPressed: () => addData(),
                 child: Text('Simpan'),
               ),
             ),
