@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api/resource.dart';
+import 'package:flutter_application_1/homeAdd.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -45,14 +46,36 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF838C8A),
+        elevation: 8,
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeAdd(),
+            )),
+        child: Icon(Icons.add, size: 30),
+      ),
     );
   }
 
   Widget buildItem(String title, String subtitle) {
     return Card(
+      elevation: 8,
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.grey),
+      ),
       child: ListTile(
-        title: Text(title),
-        subtitle: Text(subtitle),
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 24),
+        ),
+        subtitle: Text(
+          'Rp $subtitle',
+          style: TextStyle(fontSize: 20),
+        ),
       ),
     );
   }
