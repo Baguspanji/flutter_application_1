@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/api/resource.dart';
 import 'package:flutter_application_1/homePage.dart';
 
 class Home extends StatelessWidget {
@@ -51,7 +50,11 @@ class Home extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Resource().getProduk();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ));
                   },
                   child: Text('Get Produk'),
                 ),

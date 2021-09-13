@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/api/resource.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -8,30 +11,51 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<dynamic> data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    var res = await Resource().getProduk();
+    print('json = $res');
+    print('jsonDecode = $jsonDecode(res)');
+
+    // var json = jsonDecode(res) as Map<String, dynamic>;
+    // data = json['data'];
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Page'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 300,
-              height: 240,
-              child: Image.network(
-                'https://images.unsplash.com/photo-1593642532973-d31b6557fa68?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-                fit: BoxFit.cover,
-              ),
-            ),
-            Text(
-              'Laptop',
-              style: TextStyle(fontSize: 32),
-            ),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            children: data
+                .map((e) => buildItem(
+                      e['nama'],
+                      e['harga'],
+                    ))
+                .toList(),
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget buildItem(String title, String subtitle) {
+    return Card(
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(subtitle),
       ),
     );
   }
