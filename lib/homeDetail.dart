@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api/resource.dart';
+import 'package:flutter_application_1/controller/homeController.dart';
 import 'package:flutter_application_1/homeEdit.dart';
 
 class HomeDetail extends StatefulWidget {
@@ -13,6 +14,8 @@ class HomeDetail extends StatefulWidget {
 }
 
 class _HomeDetailState extends State<HomeDetail> {
+  final con = HomeController();
+
   String nama = '';
   String satuan = '';
   String harga = '';
@@ -24,13 +27,14 @@ class _HomeDetailState extends State<HomeDetail> {
   }
 
   getData() async {
-    var res = await Resource().getProdukId(widget.id.toString());
-    var json = jsonDecode(res) as Map<String, dynamic>;
-    dynamic data = json['data'];
-    nama = data['nama'];
-    satuan = data['satuan'];
-    harga = data['harga'];
-    setState(() {});
+    con.getProdukId(widget.id.toString());
+    con.resProdukId.listen((value) {
+      nama = value.data!.nama!;
+      satuan = value.data!.satuan!;
+      harga = value.data!.harga!;
+      print(nama);
+      setState(() {});
+    });
   }
 
   deleteProduk() async {

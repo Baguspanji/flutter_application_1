@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api/resource.dart';
+import 'package:flutter_application_1/controller/homeController.dart';
 
 class HomeAdd extends StatefulWidget {
   const HomeAdd({Key? key}) : super(key: key);
@@ -9,6 +10,8 @@ class HomeAdd extends StatefulWidget {
 }
 
 class _HomeAddState extends State<HomeAdd> {
+  final con = HomeController();
+
   final namaController = TextEditingController();
   final satuanController = TextEditingController();
   final hargaController = TextEditingController();
@@ -23,7 +26,11 @@ class _HomeAddState extends State<HomeAdd> {
         SnackBar(content: Text('Form harus diisi!')),
       );
     } else {
-      Resource().createProduk(context, nama, satuan, harga);
+      con.addProduk(context, nama, satuan, harga);
+      namaController.text = '';
+      satuanController.text = '';
+      hargaController.text = '';
+      setState(() {});
     }
   }
 

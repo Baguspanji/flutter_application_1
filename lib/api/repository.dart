@@ -4,11 +4,11 @@ import 'package:flutter_application_1/api/resource.dart';
 class Repository {
   final api = Resource();
 
-  Future<dynamic> getProduk() => api.getProduk();
+  Future getProduk() => api.getProduk();
 
-  Future<dynamic> getProdukId(String id) => api.getProdukId(id);
+  Future getProdukId(String id) => api.getProdukId(id);
 
-  void createProduk(
+  Future createProduk(
           BuildContext context, String nama, String satuan, String harga) =>
       api.createProduk(context, nama, satuan, harga);
 
