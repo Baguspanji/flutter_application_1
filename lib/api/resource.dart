@@ -1,17 +1,36 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/produkModel.dart';
 import 'package:http/http.dart' as http;
 
 class Resource {
   var uri = 'https://maisyaroh.com/api';
 
-  Future<dynamic> getProduk() async {
+  Future getProduk() async {
     var url = Uri.parse('$uri/produk');
-    var res = await http.get(url);
-
-    if (res.statusCode == 200) {
-      return res.body;
+    try {
+      final res = await http.get(url).timeout(const Duration(seconds: 11));
+      print(res.body);
+      if (res.statusCode == 200) {
+        return ProdukModel.fromJson(res.body);
+      } else if (res.statusCode == 404) {
+        return ProdukModel.fromJson(res.body);
+      } else {
+        throw Exception('Failure response');
+      }
+    } on SocketException catch (e) {
+      throw Exception(e.toString());
+    } on HttpException {
+      {
+        throw Exception("tidak menemukan post");
+      }
+    } on FormatException {
+      throw Exception("request salah");
+    } on TimeoutException catch (e) {
+      throw Exception(e.toString());
     }
   }
 

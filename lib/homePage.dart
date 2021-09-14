@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api/resource.dart';
+import 'package:flutter_application_1/controller/homeController.dart';
 import 'package:flutter_application_1/homeAdd.dart';
 import 'package:flutter_application_1/homeDetail.dart';
+import 'package:flutter_application_1/model/produkModel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,19 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<dynamic> data = [];
+  final con = HomeController();
 
   @override
   void initState() {
     super.initState();
-    getData();
-  }
-
-  getData() async {
-    var res = await Resource().getProduk();
-    var json = jsonDecode(res) as Map<String, dynamic>;
-    data = json['data'];
-    setState(() {});
+    con.getProduk();
   }
 
   @override
@@ -38,15 +33,33 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: RefreshIndicator(
-            onRefresh: () => getData(),
-            child: ListView(
-              children: data
-                  .map((e) => buildItem(
-                        e['id'],
-                        e['nama'],
-                        e['harga'],
-                      ))
-                  .toList(),
+            onRefresh: () async {
+              con.getProduk();
+            },
+            child: StreamBuilder<ProdukModel>(
+              stream: con.resProduk.stream,
+              builder: (_, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.data == null) {
+                    return Center(
+                      child: Text('Data Kosong'),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.data!.length,
+                      itemBuilder: (context, index) {
+                        Datum produk = snapshot.data!.data![index];
+                        return buildItem(
+                            produk.id!, produk.nama!, produk.harga!);
+                      },
+                    );
+                  }
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
         ),
